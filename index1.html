@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevWork | Global Blue Ecosystem</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --blue: #00d2ff;
+            --deep-blue: #0045ff;
+            --bg: #030712;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border: rgba(0, 210, 255, 0.15);
+            --text-color: #f1f5f9;
+            --glow: 0 0 20px rgba(0, 210, 255, 0.3);
+        }
+
+        body.light-mode {
+            --bg: #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.8);
+            --border: #e2e8f0;
+            --text-color: #0f172a;
+            --glow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            background: var(--bg);
+            color: var(--text-color); 
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+            transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Керемет фондук анимация */
+        .bg-glow {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(0, 210, 255, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(0, 69, 255, 0.08) 0%, transparent 40%);
+            animation: pulseBg 12s infinite alternate;
+        }
+
+        @keyframes pulseBg {
+            0% { transform: scale(1); opacity: 0.5; }
+            100% { transform: scale(1.1); opacity: 1; }
+        }
+
+        /* --- HEADER --- */
+        header {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(3, 7, 18, 0.7); backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border); padding: 0 5%;
+        }
+        body.light-mode header { background: rgba(255, 255, 255, 0.8); }
+
+        .top-nav { height: 80px; display: flex; justify-content: space-between; align-items: center; }
+        .logo { 
+            font-size: 24px; font-weight: 800; color: var(--blue);
+            text-decoration: none; letter-spacing: 1.5px;
+            text-shadow: 0 0 15px rgba(0, 210, 255, 0.6);
+        }
+        
+        .main-menu { display: flex; align-items: center; }
+        .main-menu a { color: #94a3b8; text-decoration: none; margin-left: 30px; font-size: 13px; font-weight: 600; transition: 0.3s; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; }
+        .main-menu a:hover, .main-menu a.active { color: var(--blue); text-shadow: var(--glow); }
+        body.light-mode .main-menu a { color: #475569; }
+
+        .burger { display: none; cursor: pointer; color: var(--blue); font-size: 26px; }
+        .theme-btn { margin-left: 25px; cursor: pointer; color: var(--blue); font-size: 20px; background: none; border: none; transition: 0.3s; }
+        .theme-btn:hover { transform: rotate(15deg); }
+
+        /* --- CONTENT --- */
+        .container { padding: 140px 5% 80px; min-height: 80vh; }
+        .section-title { 
+            font-size: 42px; text-align: center; margin-bottom: 60px; 
+            font-weight: 800; color: var(--text-color);
+            letter-spacing: -1px;
+        }
+        .section-title span { color: var(--blue); text-shadow: var(--glow); }
+
+        /* --- JOBS GRID --- */
+        .jobs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; }
+        
+        .job-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 30px; border-radius: 24px; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative; overflow: hidden;
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.8s ease backwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .job-card:hover { 
+            border-color: var(--blue);
+            transform: translateY(-12px);
+            box-shadow: 0 20px 40px rgba(0, 210, 255, 0.15);
+            background: rgba(0, 210, 255, 0.03);
+        }
+        
+        .job-card h3 { font-size: 20px; margin-bottom: 15px; color: var(--text-color); font-weight: 700; }
+        .job-info-list { margin: 20px 0; list-style: none; }
+        .job-info-list li { margin-bottom: 10px; font-size: 13px; color: #94a3b8; display: flex; align-items: center; gap: 10px; }
+        .job-info-list i { color: var(--blue); font-size: 14px; opacity: 0.8; }
+
+        .salary { font-size: 22px; font-weight: 800; margin: 20px 0; color: var(--blue); }
+
+        .btn-apply {
+            width: 100%; padding: 14px; background: rgba(0, 210, 255, 0.1);
+            border: 1px solid var(--blue); color: var(--blue); font-weight: 700; 
+            cursor: pointer; border-radius: 12px; font-size: 13px;
+            text-transform: uppercase; transition: 0.3s;
+            letter-spacing: 1px;
+        }
+        .btn-apply:hover { background: var(--blue); color: #000; box-shadow: 0 0 20px var(--blue); }
+
+        /* --- FOOTER --- */
+        footer {
+            background: rgba(2, 6, 23, 0.8);
+            border-top: 1px solid var(--border);
+            padding: 70px 5% 30px;
+            backdrop-filter: blur(10px);
+        }
+        .footer-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 50px; margin-bottom: 50px;
+        }
+        .footer-col h4 { color: #fff; margin-bottom: 25px; font-size: 18px; font-weight: 700; }
+        .footer-col p, .footer-col li { color: #94a3b8; font-size: 14px; line-height: 1.8; margin-bottom: 12px; }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.05); padding-top: 30px; text-align: center; color: #64748b; font-size: 13px; }
+
+        /* --- WHATSAPP FIXED --- */
+        .whatsapp-fixed {
+            position: fixed; bottom: 30px; right: 30px;
+            width: 65px; height: 65px; background: #25d366;
+            color: white; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center;
+            font-size: 32px; box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
+            z-index: 5000; text-decoration: none; transition: 0.4s;
+        }
+        .whatsapp-fixed:hover { transform: scale(1.1) rotate(10deg); }
+
+        /* --- MODAL --- */
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 2000; backdrop-filter: blur(15px); }
+        .modal-content { background: var(--bg); width: 95%; max-width: 500px; padding: 45px; border-radius: 30px; border: 1px solid var(--blue); position: relative; box-shadow: 0 0 50px rgba(0,210,255,0.2); }
+        .close { position: absolute; top: 20px; right: 25px; font-size: 28px; cursor: pointer; color: var(--blue); }
+
+        @media (max-width: 768px) {
+            .burger { display: block; }
+            .main-menu {
+                position: fixed; top: 80px; left: -100%; width: 100%; height: calc(100vh - 80px);
+                background: var(--bg); flex-direction: column; align-items: center;
+                padding-top: 60px; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .main-menu.active { left: 0; }
+            .main-menu a { margin: 25px 0; font-size: 20px; }
+            .section-title { font-size: 32px; }
+            .about-box { grid-template-columns: 1fr; }
+        }
+
+        #loader { text-align: center; color: var(--blue); padding: 50px; font-size: 16px; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow"></div>
+
+    <header>
+        <div class="top-nav">
+            <a href="#" onclick="showView('jobs')" class="logo">DEVWORK<span style="color:var(--text-color)">.</span></a>
+            <nav class="main-menu" id="nav-menu">
+                <a onclick="showView('jobs')" id="m-jobs" class="active">Жумуштар</a>
+                <a onclick="showView('about')" id="m-about">Биз жөнүндө</a>
+                <a onclick="showView('contact')" id="m-contact">Байланыш</a>
+                <button class="theme-btn" onclick="toggleTheme()"><i class="fas fa-moon" id="theme-icon"></i></button>
+            </nav>
+            <div class="burger" onclick="toggleMenu()">
+                <i class="fas fa-bars-staggered" id="burger-icon"></i>
+            </div>
+        </div>
+    </header>
+
+    <main id="jobs-view" class="container">
+        <h1 class="section-title">Ачык <span>Вакансиялар</span></h1>
+        <div id="loader"><i class="fas fa-atom fa-spin"></i> API ТЕХНОЛОГИЯЛАР ЖҮКТӨЛҮҮДӨ...</div>
+        <div class="jobs-grid" id="jobsGrid"></div>
+    </main>
+
+    <main id="about-view" class="container" style="display:none;">
+        <div class="about-box" style="display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; background: var(--card-bg); padding: 50px; border-radius: 30px; border: 1px solid var(--border);">
+            <div>
+                <h2 style="color: var(--blue); font-size: 36px; margin-bottom: 20px;">Биздин Миссия</h2>
+                <p style="color: ; font-size: 16px; line-height: 1.8;">DevWork 2020-жылы Ош шаарында эң таланттуу адистерди табуу максатында түзүлгөн. Биз санариптик келечекти курабыз.
+                <h2>Биздин Тарых</h2>
+                DevWork 2020-жылы Ош шаарында таланттарды издөө максатында түзүлгөн. Биз жергиликтүү рынокту дүйнөлүк деңгээлге чыгарууну каалайбыз.
+                6 жылдын ичинде биз 500дөн ашык компаниялар менен кызматташып, 15,000ден ашык адисти жумушка орноштурдук. Биздин офис Ош шаарынын борборунда, Ленин көчөсүндө жайгашкан.
+            </p>
+                <p style="color: ; margin-top: 20px;">Биздин кеңсе Ош шаарынын жүрөгүндө, Ленин 312 дарегинде жайгашкан. Биз менен бирге өсүңүз!</p>
+            </div>
+            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80" style="width:100%; border-radius:24px; box-shadow: var(--glow);">
+        </div>
+    </main>
+
+    <main id="contact-view" class="container" style="display:none; text-align: center;">
+        <h1 class="section-title">Түз <span>Байланыш</span></h1>
+        <div style="background:var(--card-bg); padding:60px; border-radius:35px; border:1px solid var(--border); display:inline-block; backdrop-filter: blur(20px);">
+            <p style="font-size:24px; font-weight:700; margin-bottom: 15px;">career@devwork.kg</p>
+            <p style="font-size:32px; font-weight:800; color: var(--blue); text-shadow: var(--glow);">+996 222 460 748</p>
+            <p style="color:#64748b; margin-top:30px; font-size:14px; letter-spacing: 2px;">ОШ ШААРЫ, ЛЕНИН КӨЧӨСҮ 312</p>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <a href="#" class="logo">DEVWORK<span style="color:var(--blue)">.</span></a>
+                <p style="margin-top:20px;">Кыргызстандагы №1 IT рекрутинг платформасы. Биздин максат - инновацияларды жана таланттарды бириктирүү.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Шилтемелер</h4>
+                <li onclick="showView('jobs')" style="cursor:pointer">Вакансиялар</li>
+                <li onclick="showView('about')" style="cursor:pointer">Биздин Тарых</li>
+                <li onclick="showView('contact')" style="cursor:pointer">Жардам Борбору</li>
+            </div>
+            <div class="footer-col">
+                <h4>Офис</h4>
+                <li><i class="fas fa-phone"></i> +996 222 460 748</li>
+                <li><i class="fas fa-location-dot"></i> Ош ш., Ленин 312</li>
+                <div style="margin-top:20px; display:flex; gap:15px;">
+                    <i class="fab fa-instagram" style="font-size:20px; color:var(--blue)"></i>
+                    <i class="fab fa-linkedin" style="font-size:20px; color:var(--blue)"></i>
+                    <i class="fab fa-telegram" style="font-size:20px; color:var(--blue)"></i>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 DevWork Global Ecosystem. Бардык укуктар корголгон.
+        </div>
+    </footer>
+
+    <a href="https://wa.me/996222460748" class="whatsapp-fixed" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <div class="modal" id="jobModal">
+        <div class="modal-content" id="modalData"></div>
+    </div>
+
+    <script>
+        let allJobs = [];
+
+        function toggleMenu() {
+            const menu = document.getElementById('nav-menu');
+            const icon = document.getElementById('burger-icon');
+            menu.classList.toggle('active');
+            if(menu.classList.contains('active')) {
+                icon.classList.replace('fa-bars-staggered', 'fa-xmark');
+            } else {
+                icon.classList.replace('fa-xmark', 'fa-bars-staggered');
+            }
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            const icon = document.getElementById('theme-icon');
+            if(document.body.classList.contains('light-mode')) {
+                icon.classList.replace('fa-moon', 'fa-sun');
+            } else {
+                icon.classList.replace('fa-sun', 'fa-moon');
+            }
+        }
+
+        async function fetchJobs() {
+            document.getElementById('loader').style.display = 'block';
+            try {
+                const res = await fetch('https://jsonplaceholder.typicode.com/posts?_limit=32');
+                const data = await res.json();
+                
+                allJobs = data.map((post, index) => {
+                    const salaries = ["$4,500", "$7,200", "$9,000", "$12,500", "$5,500"];
+                    const roles = ["Senior Fullstack Dev", "UI/UX Visualist", "Python Architect", "AI Specialist", "DevOps Engineer"];
+                    
+                    return {
+                        t: roles[Math.floor(Math.random()*5)],
+                        c: "Premium IT Partner",
+                        s: salaries[Math.floor(Math.random()*5)],
+                        sch: index % 2 === 0 ? "Аралыктан (Remote)" : "Офис / Гибрид",
+                        loc: "Ош / Бишкек / Global",
+                        d: post.body
+                    };
+                });
+                render(allJobs);
+            } catch (e) { console.error(e); }
+            document.getElementById('loader').style.display = 'none';
+        }
+
+        function render(data) {
+            const grid = document.getElementById('jobsGrid');
+            grid.innerHTML = data.map((j, i) => `
+                <div class="job-card" style="animation-delay: ${i * 0.05}s">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                        <p style="color:var(--blue); font-size:11px; font-weight:800; letter-spacing:1px;">${j.c}</p>
+                        <i class="fas fa-bookmark" style="color:rgba(148,163,184,0.3)"></i>
+                    </div>
+                    <h3>${j.t}</h3>
+                    <ul class="job-info-list">
+                        <li><i class="fas fa-globe"></i> ${j.sch}</li>
+                        <li><i class="fas fa-bolt"></i> Тез арада керек</li>
+                    </ul>
+                    <div class="salary">${j.s}</div>
+                    <button class="btn-apply" onclick="openJob(${i})">Толук маалымат</button>
+                </div>
+            `).join('');
+        }
+
+        function showView(view) {
+            ['jobs-view', 'about-view', 'contact-view'].forEach(v => document.getElementById(v).style.display = 'none');
+            document.getElementById(view + '-view').style.display = 'block';
+            document.querySelectorAll('.main-menu a').forEach(a => a.classList.remove('active'));
+            const activeLink = document.getElementById('m-' + view);
+            if(activeLink) activeLink.classList.add('active');
+            
+            document.getElementById('nav-menu').classList.remove('active');
+            document.getElementById('burger-icon').classList.replace('fa-xmark', 'fa-bars-staggered');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openJob(idx) {
+            const j = allJobs[idx];
+            document.getElementById('modalData').innerHTML = `
+                <span class="close" onclick="closeM()">&times;</span>
+                <h2 style="color:var(--blue); font-size:28px; margin-bottom:20px; font-weight:800;">${j.t}</h2>
+                <p style="font-size:15px; line-height:1.8; color:#94a3b8; margin-bottom:30px;">${j.d}</p>
+                <div class="salary" style="font-size:26px;">${j.s}</div>
+                <button class="btn-apply" style="background:var(--blue); color:#000;" onclick="window.open('https://wa.me/996222460748?text=Саламатсызбы! Мага ${j.t} вакансиясы боюнча маалымат бересизби?')">WhatsApp аркылуу тапшыруу</button>
+            `;
+            document.getElementById('jobModal').style.display = 'flex';
+        }
+
+        function closeM() { document.getElementById('jobModal').style.display = 'none'; }
+
+        fetchJobs();
+    </script>
+
+    <script src="https://code.jivo.ru/widget/iw6lbi63z0" async></script>
+</body>
+</html>
