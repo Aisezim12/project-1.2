@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="ky">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="DevWork - Кыргызстандагы №1 IT жумуш платформасы">
+    <meta name="keywords" content="IT вакансия, жумуш, программист, Кыргызстан">
+    <title>DevWork | IT вакансиялар - Кыргызстандагы №1 жумуш платформасы</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="//code.jivo.ru/widget/iw6lbi63z0" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --blue: #00d2ff;
+            --bg: #030712;
+            --card: rgba(255,255,255,0.05);
+            --border: rgba(0,210,255,0.2);
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --green: #10b981;
+        }
+        body.light-mode {
+            --bg: #f8fafc;
+            --card: rgba(0,0,0,0.03);
+            --border: #e2e8f0;
+            --text: #0f172a;
+            --text-muted: #64748b;
+        }
+        body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; transition: 0.3s; }
+        
+        header { position: fixed; top: 0; width: 100%; background: rgba(3,7,18,0.95); backdrop-filter: blur(15px); border-bottom: 1px solid var(--border); padding: 0 5%; z-index: 1000; }
+        .top-nav { height: 70px; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 24px; font-weight: 800; background: linear-gradient(135deg, var(--blue), #0066ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; }
+        .main-menu { display: flex; align-items: center; gap: 25px; }
+        .main-menu a { color: #94a3b8; text-decoration: none; font-size: 13px; font-weight: 600; cursor: pointer; }
+        .main-menu a:hover, .main-menu a.active { color: var(--blue); }
+        .logout-btn { background: rgba(255,0,0,0.15); border: 1px solid #ff4444; color: #ff4444; padding: 6px 14px; border-radius: 40px; cursor: pointer; font-size: 12px; }
+        .burger { display: none; cursor: pointer; font-size: 24px; color: var(--blue); }
+        .theme-btn { background: none; border: none; color: var(--blue); font-size: 18px; cursor: pointer; }
+        
+        /* Тил баскычтары */
+        .lang-switch { display: flex; gap: 8px; margin-left: 15px; }
+        .lang-btn { background: rgba(0,210,255,0.15); border: 1px solid var(--border); color: var(--text-muted); padding: 4px 10px; border-radius: 20px; cursor: pointer; font-size: 11px; font-weight: 600; transition: 0.2s; }
+        .lang-btn.active { background: var(--blue); color: #000; border-color: var(--blue); }
+        .lang-btn:hover:not(.active) { background: rgba(0,210,255,0.3); color: var(--blue); }
+        
+        .container { padding: 100px 5% 60px; min-height: 80vh; }
+        .section-title { font-size: 36px; text-align: center; margin-bottom: 40px; }
+        .section-title span { color: var(--blue); }
+        
+        .jobs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px,1fr)); gap: 25px; }
+        .job-card, .review-card, .app-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 25px; position: relative; transition: 0.3s; }
+        .job-card:hover, .review-card:hover { transform: translateY(-5px); border-color: var(--blue); }
+        .job-card h3 { font-size: 18px; margin-bottom: 12px; }
+        .salary { font-size: 22px; font-weight: 800; color: var(--blue); margin: 15px 0; }
+        
+        .btn { width: 100%; padding: 12px; background: rgba(0,210,255,0.1); border: 1px solid var(--blue); color: var(--blue); border-radius: 12px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        .btn:hover { background: var(--blue); color: #000; }
+        .btn-primary { background: var(--blue); color: #000; }
+        .delete-btn { position: absolute; top: 10px; right: 10px; background: rgba(255,0,0,0.2); border: 1px solid #ff4444; color: #ff4444; border-radius: 20px; padding: 3px 8px; font-size: 10px; cursor: pointer; }
+        
+        .form-card { max-width: 500px; margin: 0 auto; background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 30px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 12px; color: var(--text); font-family: inherit; }
+        .form-group label { display: block; margin-bottom: 8px; font-size: 13px; color: var(--text-muted); }
+        
+        .admin-panel { margin-top: 40px; background: var(--card); border: 2px solid var(--blue); border-radius: 20px; padding: 25px; display: none; }
+        .admin-panel.show { display: block; }
+        
+        .server-admin-panel { background: rgba(0,0,0,0.5); border-radius: 12px; padding: 15px 20px; margin-bottom: 30px; display: none; border-left: 3px solid var(--blue); }
+        .server-admin-panel.show { display: block; }
+        .server-item { display: flex; align-items: center; gap: 10px; margin: 8px 0; font-size: 13px; }
+        .server-item i { width: 25px; color: var(--blue); }
+        
+        .star-rating { display: flex; gap: 8px; margin-bottom: 15px; }
+        .star-rating i { font-size: 24px; cursor: pointer; color: #64748b; }
+        .star-rating i.active, .star-rating i:hover { color: #ffc107; }
+        .badge { background: var(--blue); color: #000; border-radius: 20px; padding: 2px 8px; font-size: 11px; margin-left: 8px; }
+        
+        .job-detail-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 2000; }
+        .job-detail-content { background: var(--bg); padding: 30px; border-radius: 24px; border: 1px solid var(--blue); max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto; position: relative; }
+        .job-detail-content h2 { color: var(--blue); margin-bottom: 20px; }
+        .job-detail-content .info-row { margin: 12px 0; padding: 10px; background: var(--card); border-radius: 10px; }
+        .close { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: var(--blue); }
+        
+        /* Биз жөнүндө бетинин стили */
+        .about-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 25px; margin: 30px 0; }
+        .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 25px; text-align: center; transition: 0.3s; }
+        .stat-card:hover { transform: translateY(-5px); border-color: var(--blue); }
+        .stat-number { font-size: 42px; font-weight: 800; color: var(--blue); }
+        .stat-label { font-size: 14px; color: var(--text-muted); margin-top: 10px; }
+        .about-text { line-height: 1.8; text-align: center; max-width: 800px; margin: 0 auto; }
+        
+        footer { background: rgba(2,6,23,0.95); padding: 50px 8% 30px; border-top: 1px solid var(--border); margin-top: 60px; }
+        .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 40px; }
+        .footer-col h4 { color: var(--blue); margin-bottom: 15px; }
+        .footer-col p, .footer-col a { color: var(--text-muted); font-size: 14px; margin: 8px 0; text-decoration: none; display: block; cursor: pointer; }
+        .footer-col a:hover { color: var(--blue); }
+        .copyright { text-align: center; padding-top: 30px; margin-top: 30px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 12px; }
+        
+        .whatsapp { position: fixed; bottom: 60px; right: 30px; width: 85px; height: 85px; background: #25d366; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; color: white; text-decoration: none; z-index: 999; box-shadow: 0 5px 20px rgba(37,211,102,0.4); }
+        .whatsapp:hover { transform: scale(1.1); }
+        
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 2000; }
+        .modal-content { background: var(--bg); padding: 35px; border-radius: 24px; border: 1px solid var(--blue); max-width: 450px; width: 90%; position: relative; }
+        
+        .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); background: var(--green); color: #000; padding: 14px 28px; border-radius: 40px; display: none; z-index: 9999; font-weight: bold; font-size: 14px; }
+        
+        .loader { text-align: center; padding: 40px; color: var(--blue); }
+        .loader i { animation: spin 1s linear infinite; font-size: 40px; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        
+        .apply-form-container { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); align-items: center; justify-content: center; z-index: 2001; }
+        .apply-form-content { background: var(--bg); padding: 35px; border-radius: 24px; border: 2px solid var(--blue); max-width: 500px; width: 90%; max-height: 85vh; overflow-y: auto; }
+        .apply-form-content h2 { color: var(--blue); margin-bottom: 20px; text-align: center; }
+        .job-info-badge { background: var(--card); padding: 10px; border-radius: 10px; margin-bottom: 20px; text-align: center; border-left: 3px solid var(--blue); }
+        
+        @media (max-width: 768px) {
+            .burger { display: block; }
+            .main-menu { position: fixed; top: 70px; left: -100%; width: 100%; background: var(--bg); flex-direction: column; padding: 40px; transition: 0.3s; gap: 20px; }
+            .main-menu.active { left: 0; }
+            .section-title { font-size: 28px; }
+            .whatsapp { width: 55px; height: 55px; font-size: 28px; bottom: 20px; right: 20px; }
+            .lang-switch { margin-left: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="top-nav">
+        <div class="logo" onclick="showView('jobs')">DEVWORK<span style="font-size:12px;">.kg</span></div>
+        <nav class="main-menu" id="navMenu">
+            <a onclick="showView('jobs')" id="m-jobs" class="active">🏠 IT Вакансиялар</a>
+            <a onclick="showView('apps')" id="m-apps" style="display:none;">📋 Арыздар <span id="appBadge" class="badge">0</span></a>
+            <a onclick="showView('reviews')" id="m-reviews">⭐ Пикирлер</a>
+            <a onclick="showView('about')" id="m-about">ℹ️ Биз жөнүндө</a>
+            <a onclick="showView('contact')" id="m-contact">📞 Байланыш</a>
+            <button class="theme-btn" onclick="toggleTheme()"><i class="fas fa-moon"></i></button>
+            <button class="logout-btn" onclick="logout()" id="logoutBtn" style="display:none;"><i class="fas fa-sign-out-alt"></i> Чыгуу</button>
+            <div class="lang-switch">
+                <button class="lang-btn active" onclick="setLanguage('ky')">Кыр</button>
+                <button class="lang-btn" onclick="setLanguage('ru')">Рус</button>
+                <button class="lang-btn" onclick="setLanguage('en')">Eng</button>
+            </div>
+        </nav>
+        <div class="burger" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+    </div>
+</header>
+
+<!-- Role Modal -->
+<div id="roleModal" class="modal" style="display:flex;">
+    <div class="modal-content">
+        <h2 id="roleTitle" style="color:var(--blue); margin-bottom:20px; text-align:center;">👋 DevWork.kg ге кош келиңиз!</h2>
+        <p id="roleSubtitle" style="text-align:center; margin-bottom:25px; color:var(--text-muted);">Кирүү үчүн ролуңузду тандаңыз</p>
+        <button class="btn" style="margin-bottom:10px;" onclick="selectRole('admin')">🔐 Админ</button>
+        <button class="btn" style="margin-bottom:10px;" onclick="selectRole('employer')">🏢 Жумуш берүүчү</button>
+        <button class="btn btn-primary" onclick="selectRole('seeker')">👤 Жумуш издөөчү</button>
+    </div>
+</div>
+
+<!-- Jobs View -->
+<main id="jobs-view" class="container" style="display:none;">
+    <h1 class="section-title"><span id="jobsTitle">Ачык IT Вакансиялар</span></h1>
+    
+    <!-- Сервер/Хостинг/Домен - АДМИНГЕ ГАНА -->
+    <div id="serverAdminPanel" class="server-admin-panel">
+        <div style="margin-bottom:10px;"><i class="fas fa-server"></i> <strong>🖥️ Сервер маалыматы</strong></div>
+        <div class="server-item"><i class="fas fa-globe"></i> Хостинг: <strong>Netlify (Global CDN)</strong></div>
+        <div class="server-item"><i class="fas fa-link"></i> Домен: <strong>devwork.netlify.app</strong></div>
+        <div class="server-item"><i class="fas fa-network-wired"></i> IP дареги: <span id="serverIp">Текшерүү...</span></div>
+        <div class="server-item"><i class="fas fa-shield-alt"></i> SSL: <strong>Автоматтык</strong></div>
+        <div class="server-item"><i class="fas fa-chart-line"></i> Статус: <span style="color:var(--green);">🟢 Онлайн</span></div>
+    </div>
+    
+    <div id="jobsGrid" class="jobs-grid"><div class="loader"><i class="fas fa-spinner"></i><br id="loadingText"><span>IT вакансиялар жүктөлүүдө...</span></div></div>
+    <div id="adminPanel" class="admin-panel">
+        <h3 style="color:var(--blue); margin-bottom:15px;">➕ Жаңы вакансия кошуу</h3>
+        <input type="text" id="jobTitle" placeholder="Кызмат аталышы" style="width:100%; margin-bottom:10px; padding:12px; border-radius:12px; background:rgba(255,255,255,0.05); border:1px solid var(--border); color:var(--text);">
+        <input type="text" id="jobSalary" placeholder="Айлык акы" style="width:100%; margin-bottom:10px; padding:12px; border-radius:12px; background:rgba(255,255,255,0.05); border:1px solid var(--border); color:var(--text);">
+        <input type="text" id="jobType" placeholder="Режим" style="width:100%; margin-bottom:10px; padding:12px; border-radius:12px; background:rgba(255,255,255,0.05); border:1px solid var(--border); color:var(--text);">
+        <textarea id="jobDesc" rows="2" placeholder="Сыпаттама" style="width:100%; margin-bottom:10px; padding:12px; border-radius:12px; background:rgba(255,255,255,0.05); border:1px solid var(--border); color:var(--text);"></textarea>
+        <button class="btn" onclick="addJob()">➕ Вакансия кошуу</button>
+    </div>
+</main>
+
+<!-- Apps View -->
+<main id="apps-view" class="container" style="display:none;">
+    <h1 class="section-title"><span id="appsTitle">Келген Арыздар</span></h1>
+    <div id="appsList"></div>
+</main>
+
+<!-- Reviews View -->
+<main id="reviews-view" class="container" style="display:none;">
+    <h1 class="section-title"><span id="reviewsTitle">Пикирлер жана Баа</span></h1>
+    <div id="reviewsList"></div>
+    <div class="form-card" style="margin-top:30px;">
+        <h3 id="reviewFormTitle" style="color:var(--blue); margin-bottom:15px;">Пикир калтыруу</h3>
+        <div class="star-rating" id="starRating">
+            <i class="far fa-star" data-r="1"></i><i class="far fa-star" data-r="2"></i>
+            <i class="far fa-star" data-r="3"></i><i class="far fa-star" data-r="4"></i>
+            <i class="far fa-star" data-r="5"></i>
+        </div>
+        <div class="form-group"><textarea id="revText" rows="3" placeholder="Пикириңиз..."></textarea></div>
+        <button class="btn btn-primary" onclick="addReview()" id="sendReviewBtn">Пикир жөнөтүү</button>
+    </div>
+</main>
+
+<!-- About View - МАКТОО МААЛЫМАТ (3 тилде) -->
+<main id="about-view" class="container" style="display:none;">
+    <div style="background:var(--card); border-radius:24px; padding:40px; text-align:center;">
+        <h2 style="color:var(--blue); font-size:32px;" id="aboutTitle">DevWork.kg</h2>
+        <p class="about-text" id="aboutDesc1">Кыргызстандагы №1 IT жумуш платформасы. 2020-жылы Ош шаарында негизделген. Бүгүнкү күндө 500+ компания жана 15000+ адис биздин платформа аркылуу иш тапкан.</p>
+        
+        <div class="about-stats">
+            <div class="stat-card"><div class="stat-number" id="stat1">500+</div><div class="stat-label" id="statLabel1">Компания</div></div>
+            <div class="stat-card"><div class="stat-number" id="stat2">15000+</div><div class="stat-label" id="statLabel2">Адис</div></div>
+            <div class="stat-card"><div class="stat-number" id="stat3">3000+</div><div class="stat-label" id="statLabel3">Вакансия</div></div>
+            <div class="stat-card"><div class="stat-number" id="stat4">98%</div><div class="stat-label" id="statLabel4">Ийгиликтүү жайгаштыруу</div></div>
+        </div>
+        
+        <p class="about-text" id="aboutDesc2">Биздин миссия - Кыргызстандагы IT тармагын өнүктүрүү, жаш адистерди колдоо жана компанияларга мыкты кадрларды табууга жардам берүү.</p>
+        <p class="about-text" id="aboutDesc3">🏆 2023-жылы "Кыргызстандын эң мыкты IT платформасы" наамын алган. Биз сиздин ийгилигиңиз үчүн иштейбиз!</p>
+        <p style="margin-top:30px;"><i class="fas fa-map-marker-alt"></i> <span id="aboutAddress">Ленин 312, Ош шаары</span></p>
+        <p><i class="fas fa-phone"></i> +996 227 206 522</p>
+    </div>
+</main>
+
+<!-- Contact View -->
+<main id="contact-view" class="container" style="display:none;">
+    <div style="background:var(--card); border-radius:24px; padding:40px; text-align:center; max-width:400px; margin:0 auto;">
+        <h2 style="color:var(--blue);" id="contactTitle">Байланыш</h2>
+        <p style="margin:15px 0;"><i class="fas fa-phone"></i> <a href="tel:+996227206522" style="color:var(--text); text-decoration:none;">+996 227 206 522</a></p>
+        <p style="margin:15px 0;"><i class="fab fa-whatsapp" style="color:#25d366;"></i> <a href="https://wa.me/996227206522" target="_blank" style="color:var(--text); text-decoration:none;">+996 227 206 522 (WhatsApp)</a></p>
+        <p style="margin:15px 0;"><i class="fas fa-envelope"></i> career@devwork.kg</p>
+        <p style="margin:15px 0;"><i class="fas fa-map-marker-alt"></i> <span id="contactAddress">Ош, Ленин 312</span></p>
+    </div>
+</main>
+
+<footer>
+    <div class="footer-content">
+        <div class="footer-col"><h4>DevWork.kg</h4><p id="footerText">Кыргызстандагы №1 IT жумуш платформасы</p></div>
+        <div class="footer-col"><h4 id="footerQuick">Тез шилтемелер</h4><a onclick="showView('jobs')" id="footerJobs">Вакансиялар</a><a onclick="showView('reviews')" id="footerReviews">Пикирлер</a></div>
+        <div class="footer-col"><h4 id="footerContact">Байланыш</h4><p>📞 +996 227 206 522</p><p>✉️ career@devwork.kg</p></div>
+    </div>
+    <div class="copyright">© 2026 DevWork.kg | Хостинг: Netlify</div>
+</footer>
+
+<a href="https://wa.me/996227206522" class="whatsapp" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+<!-- Арыз формасы -->
+<div id="applyFormModal" class="apply-form-container">
+    <div class="apply-form-content">
+        <span class="close" onclick="closeApplyForm()" style="float:right; font-size:24px; cursor:pointer;">&times;</span>
+        <h2 id="applyFormTitle"><i class="fas fa-paper-plane"></i> Вакансияга арыз кылуу</h2>
+        <div id="selectedJobInfo" class="job-info-badge"></div>
+        <div class="form-group"><label id="applyNameLabel"><i class="fas fa-user"></i> Аты-жөнүңүз *</label><input type="text" id="applyName" placeholder="Мисалы: Бектур уулу Азамат"></div>
+        <div class="form-group"><label id="applyPhoneLabel"><i class="fas fa-phone"></i> Байланыш телефоңуз *</label><input type="tel" id="applyPhone" placeholder="Мисалы: 0555 123 456"></div>
+        <div class="form-group"><label id="applyEmailLabel"><i class="fas fa-envelope"></i> Email дарегиңиз</label><input type="email" id="applyEmail" placeholder="Мисалы: azamat@gmail.com"></div>
+        <div class="form-group"><label id="applyDirectionLabel"><i class="fas fa-code"></i> IT багытыңыз</label><select id="applyDirection"><option value="">Тандаңыз</option><option>Frontend React</option><option>Backend Python</option><option>Backend Node.js</option><option>Мобилдик Flutter</option><option>DevOps</option><option>QA тестировщик</option><option>UI/UX дизайнер</option><option>Башка</option></select></div>
+        <div class="form-group"><label id="applyExpLabel"><i class="fas fa-chart-line"></i> Тажрыйбаңыз</label><select id="applyExp"><option>0-1 жыл</option><option>1-3 жыл</option><option>3-5 жыл</option><option>5+ жыл</option></select></div>
+        <div class="form-group"><label id="applyAboutLabel"><i class="fas fa-comment"></i> Өзүңүз жөнүндө кыскача</label><textarea id="applyAbout" rows="3" placeholder="Билимиңиз, көндүмдөрүңүз..."></textarea></div>
+        <button class="btn btn-primary" onclick="submitJobApplication()" id="submitApplyBtn"><i class="fas fa-check-circle"></i> Арыз жөнөтүү</button>
+    </div>
+</div>
+
+<!-- Вакансиянын толук маалыматы -->
+<div id="jobDetailModal" class="job-detail-modal">
+    <div class="job-detail-content">
+        <span class="close" onclick="closeJobDetail()">&times;</span>
+        <div id="jobDetailContent"></div>
+    </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+    let jobs = [];
+    let customJobs = [];
+    let applications = [];
+    let reviews = [];
+    let currentRole = null;
+    let currentRating = 0;
+    let isLoggedIn = false;
+    let currentSelectedJob = null;
+    let currentLang = 'ky';
+
+    // 35+ IT вакансия
+    const jobTitles = ["Frontend React Иштеп чыгуучу", "Python Backend Программист", "UI/UX Дизайнер", "Мобилдик Flutter Иштеп чыгуучу", "DevOps Инженер", "QA Тестировщик", "Full Stack JavaScript", "Android Kotlin Программист", "iOS Swift Программист", "Node.js Сервер Программисти", "Киберкоопсуздук адиси", "IT Долбоор менеджери", "Маалыматтар базасынын администратору", "System Administrator", "Data Scientist", "Product Manager", "Cloud Архитектор", "Blockchain Иштеп чыгуучу", "1C Программист", "IT Trainer", "Веб-дизайнер", "SEO Адис", "SMM Менеджер", "IT Support", "ERP Consultant", "Business Analyst", "Game Developer", "AR/VR Иштеп чыгуучу", "Системалык аналитик", "Sales Manager", "HR Manager", "Office Manager", "Technical Writer", "IT Аудитор", "Machine Learning Engineer"];
+    
+    const salaries = ["120 000 сом", "145 000 сом", "85 000 сом", "130 000 сом", "160 000 сом", "70 000 сом", "150 000 сом", "110 000 сом", "140 000 сом", "135 000 сом", "180 000 сом", "100 000 сом", "95 000 сом", "90 000 сом", "170 000 сом", "125 000 сом", "190 000 сом", "200 000 сом", "80 000 сом", "75 000 сом", "65 000 сом", "60 000 сом", "50 000 сом", "55 000 сом", "85 000 сом", "120 000 сом", "130 000 сом", "140 000 сом", "88 000 сом", "70 000 сом", "65 000 сом", "60 000 сом", "78 000 сом", "95 000 сом", "155 000 сом"];
+    
+    const jobTypes = ["Аралыктан", "Офистен", "Гибриддик", "Аралыктан", "Офистен", "Ийкемдүү", "Офистен", "Аралыктан", "Офистен", "Аралыктан", "Офистен", "Гибриддик", "Офистен", "Офистен", "Аралыктан", "Гибриддик", "Аралыктан", "Аралыктан", "Офистен", "Аралыктан", "Аралыктан", "Офистен", "Аралыктан", "Офистен", "Гибриддик", "Офистен", "Аралыктан", "Аралыктан", "Офистен", "Офистен", "Офистен", "Офистен", "Аралыктан", "Офистен", "Аралыктан"];
+    
+    const kyrgyzFullDesc = ["React, Next.js, TypeScript менен веб-интерфейстерди иштеп чыгуу.", "Django, FastAPI менен сервердик логиканы түзүү.", "Figma, Adobe XD менен дизайн түзүү.", "Flutter менен мобилдик тиркемелерди түзүү.", "Docker, Kubernetes, CI/CD билүү.", "Автоматташтырылган тесттерди жазуу.", "React + Node.js менен толук цикл.", "Kotlin тилинде Android тиркемелери.", "Swift тилинде iOS тиркемелери.", "Node.js, Express.js менен API түзүү.", "Серверлерди коргоо, пентест.", "Scrum, Agile билүү.", "PostgreSQL, MySQL оптималдаштыруу.", "Linux серверлерин башкаруу.", "Python, Pandas менен маалыматтарды талдоо.", "Продукттарды башкаруу.", "AWS, Azure, Google Cloud билүү.", "Blockchain, Solidity билүү.", "1C иштеп чыгуу.", "IT тренингдер өткөрүү.", "Сайттардын дизайны.", "SEO оптималдаштыруу.", "Социалдык тармактарды башкаруу.", "IT көмөк көрсөтүү.", "ERP системаларын орнотуу.", "Бизнес талаптарды талдоо.", "Unity менен оюндарды түзүү.", "AR/VR тиркемелерин түзүү.", "Системалык талдоо.", "Программалык камсыздоону сатуу.", "IT адистерди издөө.", "Кеңсени башкаруу.", "Техникалык документация.", "IT аудит.", "Machine Learning моделдери."];
+
+    // Тилдер үчүн маалыматтар
+    const translations = {
+        ky: {
+            jobsTitle: "Ачык IT Вакансиялар", appsTitle: "Келген Арыздар", reviewsTitle: "Пикирлер жана Баа",
+            reviewFormTitle: "Пикир калтыруу", sendReviewBtn: "Пикир жөнөтүү", applyFormTitle: "Вакансияга арыз кылуу",
+            applyNameLabel: "Аты-жөнүңүз *", applyPhoneLabel: "Байланыш телефоңуз *", applyEmailLabel: "Email дарегиңиз",
+            applyDirectionLabel: "IT багытыңыз", applyExpLabel: "Тажрыйбаңыз", applyAboutLabel: "Өзүңүз жөнүндө кыскача",
+            submitApplyBtn: "Арыз жөнөтүү", aboutTitle: "DevWork.kg",
+            aboutDesc1: "Кыргызстандагы №1 IT жумуш платформасы. 2020-жылы Ош шаарында негизделген. Бүгүнкү күндө 500+ компания жана 15000+ адис биздин платформа аркылуу иш тапкан.",
+            aboutDesc2: "Биздин миссия - Кыргызстандагы IT тармагын өнүктүрүү, жаш адистерди колдоо жана компанияларга мыкты кадрларды табууга жардам берүү.",
+            aboutDesc3: "🏆 2023-жылы 'Кыргызстандын эң мыкты IT платформасы' наамын алган. Биз сиздин ийгилигиңиз үчүн иштейбиз!",
+            statLabel1: "Компания", statLabel2: "Адис", statLabel3: "Вакансия", statLabel4: "Ийгиликтүү жайгаштыруу",
+            aboutAddress: "Ленин 312, Ош шаары", contactTitle: "Байланыш", contactAddress: "Ош, Ленин 312",
+            footerText: "Кыргызстандагы №1 IT жумуш платформасы", footerQuick: "Тез шилтемелер", footerJobs: "Вакансиялар",
+            footerReviews: "Пикирлер", footerContact: "Байланыш", loadingText: "IT вакансиялар жүктөлүүдө...",
+            roleTitle: "👋 DevWork.kg ге кош келиңиз!", roleSubtitle: "Кирүү үчүн ролуңузду тандаңыз"
+        },
+        ru: {
+            jobsTitle: "Открытые IT Вакансии", appsTitle: "Поступившие Заявки", reviewsTitle: "Отзывы и Оценки",
+            reviewFormTitle: "Оставить отзыв", sendReviewBtn: "Отправить отзыв", applyFormTitle: "Подать заявку на вакансию",
+            applyNameLabel: "Ваше имя *", applyPhoneLabel: "Контактный телефон *", applyEmailLabel: "Email адрес",
+            applyDirectionLabel: "IT направление", applyExpLabel: "Опыт работы", applyAboutLabel: "Кратко о себе",
+            submitApplyBtn: "Отправить заявку", aboutTitle: "DevWork.kg",
+            aboutDesc1: "№1 IT платформа вакансий в Кыргызстане. Основана в 2020 году в городе Ош. Сегодня 500+ компаний и 15000+ специалистов нашли работу через нашу платформу.",
+            aboutDesc2: "Наша миссия - развивать IT сферу в Кыргызстане, поддерживать молодых специалистов и помогать компаниям находить лучшие кадры.",
+            aboutDesc3: "🏆 В 2023 году получили премию 'Лучшая IT платформа Кыргызстана'. Мы работаем для вашего успеха!",
+            statLabel1: "Компаний", statLabel2: "Специалистов", statLabel3: "Вакансий", statLabel4: "Успешное трудоустройство",
+            aboutAddress: "Ленина 312, город Ош", contactTitle: "Контакты", contactAddress: "Ош, ул. Ленина 312",
+            footerText: "№1 IT платформа вакансий в Кыргызстане", footerQuick: "Быстрые ссылки", footerJobs: "Вакансии",
+            footerReviews: "Отзывы", footerContact: "Контакты", loadingText: "Загрузка IT вакансий...",
+            roleTitle: "👋 Добро пожаловать в DevWork.kg!", roleSubtitle: "Выберите роль для входа"
+        },
+        en: {
+            jobsTitle: "Open IT Jobs", appsTitle: "Received Applications", reviewsTitle: "Reviews & Ratings",
+            reviewFormTitle: "Leave a Review", sendReviewBtn: "Send Review", applyFormTitle: "Apply for Job",
+            applyNameLabel: "Full Name *", applyPhoneLabel: "Phone Number *", applyEmailLabel: "Email Address",
+            applyDirectionLabel: "IT Direction", applyExpLabel: "Experience", applyAboutLabel: "About You",
+            submitApplyBtn: "Submit Application", aboutTitle: "DevWork.kg",
+            aboutDesc1: "#1 IT job platform in Kyrgyzstan. Founded in 2020 in Osh city. Today, 500+ companies and 15000+ specialists have found jobs through our platform.",
+            aboutDesc2: "Our mission is to develop the IT sector in Kyrgyzstan, support young professionals, and help companies find the best talent.",
+            aboutDesc3: "🏆 Winner of 'Best IT Platform of Kyrgyzstan' award in 2023. We work for your success!",
+            statLabel1: "Companies", statLabel2: "Specialists", statLabel3: "Jobs", statLabel4: "Successful Placement",
+            aboutAddress: "Lenin 312, Osh city", contactTitle: "Contact", contactAddress: "Osh, Lenin 312",
+            footerText: "#1 IT job platform in Kyrgyzstan", footerQuick: "Quick Links", footerJobs: "Jobs",
+            footerReviews: "Reviews", footerContact: "Contact", loadingText: "Loading IT jobs...",
+            roleTitle: "👋 Welcome to DevWork.kg!", roleSubtitle: "Select your role to login"
+        }
+    };
+
+    function setLanguage(lang) {
+        currentLang = lang;
+        document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        
+        const t = translations[lang];
+        document.getElementById('jobsTitle').innerHTML = t.jobsTitle;
+        document.getElementById('appsTitle').innerHTML = t.appsTitle;
+        document.getElementById('reviewsTitle').innerHTML = t.reviewsTitle;
+        document.getElementById('reviewFormTitle').innerHTML = t.reviewFormTitle;
+        document.getElementById('sendReviewBtn').innerHTML = t.sendReviewBtn;
+        document.getElementById('applyFormTitle').innerHTML = '<i class="fas fa-paper-plane"></i> ' + t.applyFormTitle;
+        document.getElementById('applyNameLabel').innerHTML = '<i class="fas fa-user"></i> ' + t.applyNameLabel;
+        document.getElementById('applyPhoneLabel').innerHTML = '<i class="fas fa-phone"></i> ' + t.applyPhoneLabel;
+        document.getElementById('applyEmailLabel').innerHTML = '<i class="fas fa-envelope"></i> ' + t.applyEmailLabel;
+        document.getElementById('applyDirectionLabel').innerHTML = '<i class="fas fa-code"></i> ' + t.applyDirectionLabel;
+        document.getElementById('applyExpLabel').innerHTML = '<i class="fas fa-chart-line"></i> ' + t.applyExpLabel;
+        document.getElementById('applyAboutLabel').innerHTML = '<i class="fas fa-comment"></i> ' + t.applyAboutLabel;
+        document.getElementById('submitApplyBtn').innerHTML = '<i class="fas fa-check-circle"></i> ' + t.submitApplyBtn;
+        document.getElementById('aboutTitle').innerHTML = t.aboutTitle;
+        document.getElementById('aboutDesc1').innerHTML = t.aboutDesc1;
+        document.getElementById('aboutDesc2').innerHTML = t.aboutDesc2;
+        document.getElementById('aboutDesc3').innerHTML = t.aboutDesc3;
+        document.getElementById('statLabel1').innerHTML = t.statLabel1;
+        document.getElementById('statLabel2').innerHTML = t.statLabel2;
+        document.getElementById('statLabel3').innerHTML = t.statLabel3;
+        document.getElementById('statLabel4').innerHTML = t.statLabel4;
+        document.getElementById('aboutAddress').innerHTML = t.aboutAddress;
+        document.getElementById('contactTitle').innerHTML = t.contactTitle;
+        document.getElementById('contactAddress').innerHTML = t.contactAddress;
+        document.getElementById('footerText').innerHTML = t.footerText;
+        document.getElementById('footerQuick').innerHTML = t.footerQuick;
+        document.getElementById('footerJobs').innerHTML = t.footerJobs;
+        document.getElementById('footerReviews').innerHTML = t.footerReviews;
+        document.getElementById('footerContact').innerHTML = t.footerContact;
+        document.getElementById('loadingText').innerHTML = t.loadingText;
+        document.getElementById('roleTitle').innerHTML = t.roleTitle;
+        document.getElementById('roleSubtitle').innerHTML = t.roleSubtitle;
+    }
+
+    async function fetchJobs() {
+        try {
+            const response = await fetch('https://jsonplaceholder.typicode.com/posts?_limit=35');
+            const data = await response.json();
+            jobs = data.map((item, index) => ({
+                id: item.id, title: jobTitles[index % jobTitles.length], salary: salaries[index % salaries.length],
+                type: jobTypes[index % jobTypes.length], desc: (kyrgyzFullDesc[index % kyrgyzFullDesc.length]).substring(0, 100) + "...", fromAPI: true
+            }));
+            let saved = localStorage.getItem("cjobs");
+            if(saved) customJobs = JSON.parse(saved);
+            if(isLoggedIn) renderJobs();
+            showToast("✅!");
+        } catch(e) { 
+            jobs = [];
+            for(let i=0; i<35; i++) jobs.push({ id: i+1, title: jobTitles[i % jobTitles.length], salary: salaries[i % salaries.length], type: jobTypes[i % jobTypes.length], desc: (kyrgyzFullDesc[i % kyrgyzFullDesc.length]).substring(0, 100), fromAPI: true });
+            if(isLoggedIn) renderJobs();
+        }
+    }
+
+    function getServerIP() {
+        fetch('https://api.ipify.org?format=json').then(res => res.json()).then(data => { document.getElementById('serverIp').innerHTML = data.ip; }).catch(() => { document.getElementById('serverIp').innerHTML = '185.217.1.100'; });
+    }
+
+    function saveAllData() {
+        localStorage.setItem("devwork_apps", JSON.stringify(applications));
+        localStorage.setItem("devwork_reviews", JSON.stringify(reviews));
+        localStorage.setItem("devwork_cjobs", JSON.stringify(customJobs));
+        if(currentRole) localStorage.setItem("devwork_role", currentRole);
+        updateBadge();
+    }
+    
+    function loadAllData() {
+        let a = localStorage.getItem("devwork_apps"); if(a) applications = JSON.parse(a);
+        let r = localStorage.getItem("devwork_reviews"); if(r) reviews = JSON.parse(r);
+        let c = localStorage.getItem("devwork_cjobs"); if(c) customJobs = JSON.parse(c);
+        let rl = localStorage.getItem("devwork_role"); if(rl) currentRole = rl;
+        updateBadge();
+    }
+    
+    function updateBadge() { let b = document.getElementById('appBadge'); if(b) b.innerText = applications.length; }
+    function toggleMenu() { document.getElementById('navMenu').classList.toggle('active'); }
+    function toggleTheme() { document.body.classList.toggle('light-mode'); localStorage.setItem("devwork_theme", document.body.classList.contains('light-mode') ? 'light' : 'dark'); }
+    function showToast(msg) { let t = document.getElementById('toast'); t.innerText = msg; t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 3000); }
+
+    function logout() {
+        currentRole = null; isLoggedIn = false;
+        localStorage.removeItem("devwork_role");
+        document.getElementById('adminPanel').classList.remove('show');
+        document.getElementById('serverAdminPanel').classList.remove('show');
+        document.getElementById('m-apps').style.display = 'none';
+        document.getElementById('logoutBtn').style.display = 'none';
+        document.getElementById('jobs-view').style.display = 'none';
+        document.getElementById('roleModal').style.display = 'flex';
+        showToast("👋 Чыктыңыз!");
+    }
+
+    function showView(v) {
+        if(!isLoggedIn) { showToast("⚠️ Адегенде кириңиз!"); return; }
+        document.querySelectorAll('main').forEach(m => m.style.display = 'none');
+        document.getElementById(v+'-view').style.display = 'block';
+        document.querySelectorAll('.main-menu a').forEach(a => a.classList.remove('active'));
+        let el = document.getElementById('m-'+v); if(el) el.classList.add('active');
+        if(v === 'apps' && currentRole === 'admin') renderApps();
+        window.scrollTo(0,0);
+    }
+
+    function selectRole(role) {
+        if(role === 'admin') {
+            let p = prompt("🔐 Админ пароль:");
+            if(p !== "devwork2026") { alert("❌ Туура эмес пароль!"); return; }
+            currentRole = "admin"; isLoggedIn = true;
+            document.getElementById('adminPanel').classList.add('show');
+            document.getElementById('serverAdminPanel').classList.add('show');
+            document.getElementById('m-apps').style.display = 'block';
+            document.getElementById('logoutBtn').style.display = 'block';
+            document.getElementById('jobs-view').style.display = 'block';
+            showToast("🔓 Админ режими");
+            getServerIP();
+        } else if(role === 'employer') {
+            let p = prompt("🏢 Жумуш берүүчү пароль:");
+            if(p !== "worker2026") { alert("❌ Туура эмес пароль!"); return; }
+            currentRole = "employer"; isLoggedIn = true;
+            document.getElementById('adminPanel').classList.add('show');
+            document.getElementById('logoutBtn').style.display = 'block';
+            document.getElementById('jobs-view').style.display = 'block';
+            showToast("🏢 Жумуш берүүчү режими");
+        } else {
+            currentRole = "seeker"; isLoggedIn = true;
+            document.getElementById('logoutBtn').style.display = 'block';
+            document.getElementById('jobs-view').style.display = 'block';
+            showToast("👤 Жумуш издөөчү режими");
+        }
+        document.getElementById('roleModal').style.display = 'none';
+        localStorage.setItem("devwork_role", currentRole);
+        renderJobs(); renderReviews();
+        if(currentRole === 'admin') renderApps();
+        saveAllData();
+    }
+
+    function addJob() {
+        let t = document.getElementById('jobTitle').value.trim(), s = document.getElementById('jobSalary').value.trim(), ty = document.getElementById('jobType').value.trim(), d = document.getElementById('jobDesc').value.trim();
+        if(!t) return alert("Аталыш керек!");
+        customJobs.unshift({ id: Date.now(), title: t, salary: s || "Келишимдүү", type: ty || "Каалаган", desc: d || "Толук маалымат WhatsApp аркылуу", isCustom: true });
+        saveAllData(); renderJobs();
+        showToast("Вакансия кошулду!");
+        document.getElementById('jobTitle').value = ''; document.getElementById('jobSalary').value = ''; document.getElementById('jobType').value = ''; document.getElementById('jobDesc').value = '';
+    }
+
+    function deleteJob(id) { if(confirm("Өчүрүлөт?")) { customJobs = customJobs.filter(j => j.id !== id); saveAllData(); renderJobs(); showToast("Өчүрүлдү!"); } }
+
+    function getFullJobInfo(title, salary, type) {
+        const isOffice = type.includes("Офистен");
+        const workHours = isOffice ? "Дүйшөмбү-Жума: 09:00-18:00" : "Ийкемдүү график";
+        const benefits = "🏥 Медициналык камсыздандыруу, 📚 Үйрөнүүгө бюджет, 💻 Жумушчу ноутбук, 🌴 28 күн эс алуу";
+        let index = jobTitles.indexOf(title); if(index === -1) index = 0;
+        return `<h2>📌 ${title}</h2><div class="info-row"><strong>💰 Айлык акы:</strong> ${salary}</div><div class="info-row"><strong>⏰ Иш режими:</strong> ${type}</div><div class="info-row"><strong>🕐 Иш убактысы:</strong> ${workHours}</div><div class="info-row"><strong>📍 Жумуш орду:</strong> ${isOffice ? "Ош шаары" : "Аралыктан"}</div><div class="info-row"><strong>📋 Милдеттер:</strong> ${kyrgyzFullDesc[index % kyrgyzFullDesc.length]}</div><div class="info-row"><strong>🎁 Артыкчылыктар:</strong> ${benefits}</div><button class="btn btn-primary" style="margin-top:20px;" onclick="closeJobDetail(); openApplyForJob('${title.replace(/'/g, "\\'")}')">📝 Арыз берүү</button>`;
+    }
+    
+    function showDetail(job) { document.getElementById('jobDetailContent').innerHTML = getFullJobInfo(job.title, job.salary, job.type); document.getElementById('jobDetailModal').style.display = 'flex'; }
+    function closeJobDetail() { document.getElementById('jobDetailModal').style.display = 'none'; }
+
+    function renderJobs() {
+        if(!isLoggedIn) return;
+        let all = [...customJobs, ...jobs];
+        let container = document.getElementById('jobsGrid');
+        if(all.length === 0) { container.innerHTML = '<div class="loader">Вакансиялар жок</div>'; return; }
+        container.innerHTML = all.map(j => `<div class="job-card"><div class="job-card-inner">${(currentRole === 'admin' || currentRole === 'employer') && j.isCustom ? `<button class="delete-btn" onclick="event.stopPropagation(); deleteJob(${j.id})">🗑</button>` : ''}<h3>📌 ${j.title}</h3><div class="salary">💰 ${j.salary}</div><p><i class="fas fa-clock"></i> ${j.type}</p><p style="font-size:13px; color:var(--text-muted); margin:10px 0;">${j.desc.substring(0, 80)}...</p><div style="display:flex; gap:10px; margin-top:15px;"><button class="btn" onclick="showDetail(${JSON.stringify(j).replace(/\\/g,'\\\\').replace(/"/g,'&quot;')})">📖 Толук маалымат</button><button class="btn btn-primary" onclick="openApplyForJob('${j.title.replace(/'/g, "\\'")}')">📝 Арыз берүү</button></div></div></div>`).join('');
+    }
+
+    function openApplyForJob(jobTitle) {
+        if(!isLoggedIn) { showToast("⚠️ Адегенде кириңиз!"); return; }
+        currentSelectedJob = jobTitle;
+        document.getElementById('selectedJobInfo').innerHTML = `<strong>📌 Тандалган вакансия:</strong> ${jobTitle}`;
+        document.getElementById('applyName').value = ''; document.getElementById('applyPhone').value = ''; document.getElementById('applyEmail').value = ''; document.getElementById('applyDirection').value = ''; document.getElementById('applyExp').value = '0-1 жыл'; document.getElementById('applyAbout').value = '';
+        document.getElementById('applyFormModal').style.display = 'flex';
+    }
+    
+    function closeApplyForm() { document.getElementById('applyFormModal').style.display = 'none'; }
+    
+    function submitJobApplication() {
+        let name = document.getElementById('applyName').value.trim(), phone = document.getElementById('applyPhone').value.trim(), email = document.getElementById('applyEmail').value.trim(), direction = document.getElementById('applyDirection').value, exp = document.getElementById('applyExp').value, about = document.getElementById('applyAbout').value.trim();
+        if(!name) { alert("❌ Аты-жөнүңүздү жазыңыз!"); return; }
+        if(!phone) { alert("❌ Байланыш телефоңузду жазыңыз!"); return; }
+        let jobName = currentSelectedJob ? currentSelectedJob : "Көрсөтүлбөгөн вакансия";
+        applications.unshift({ id: Date.now(), name, phone, email: email || "-", direction: direction || "-", experience: exp, about: about || "-", job: jobName, date: new Date().toLocaleString() });
+        saveAllData(); closeApplyForm(); showToast("✅ Арызыңыз ийгиликтүү жөнөтүлдү!");
+        if(currentRole === 'admin') renderApps();
+    }
+
+    function renderApps() {
+        let container = document.getElementById('appsList');
+        if(applications.length === 0) { container.innerHTML = '<div class="loader">📭 Арыздар жок</div>'; return; }
+        container.innerHTML = applications.map(a => `<div class="app-card">${currentRole === 'admin' ? `<button class="delete-btn" onclick="deleteApp(${a.id})">🗑</button>` : ''}<strong>👤 ${a.name}</strong><br>📞 ${a.phone}<br>✉️ ${a.email}<br>💻 ${a.direction}<br>📊 ${a.experience}<br>📌 Вакансия: ${a.job}<br>📝 ${a.about}<br><small>📅 ${a.date}</small></div>`).join('');
+    }
+    
+    function deleteApp(id) { if(confirm("Арызды өчүргүңүз келеби?")) { applications = applications.filter(a => a.id !== id); saveAllData(); renderApps(); showToast("❌ Өчүрүлдү!"); } }
+
+    function setupStars() {
+        let stars = document.querySelectorAll('#starRating i');
+        stars.forEach(s => { s.onclick = () => { let val = parseInt(s.dataset.r); currentRating = val; stars.forEach(ss => { let r = parseInt(ss.dataset.r); if(r <= val) { ss.classList.remove('far'); ss.classList.add('fas','active'); } else { ss.classList.remove('fas','active'); ss.classList.add('far'); } }); }; });
+    }
+    
+    function addReview() {
+        if(!isLoggedIn) { showToast("⚠️ Адегенде кириңиз!"); return; }
+        let text = document.getElementById('revText').value.trim();
+        if(!text) return alert("Пикириңизди жазыңыз!");
+        if(currentRating === 0) return alert("Баа бериңиз!");
+        let name = currentRole === 'admin' ? 'Админ' : (currentRole === 'employer' ? 'Жумуш берүүчү' : 'Колдонуучу');
+        reviews.unshift({ id: Date.now(), name, rating: currentRating, text, date: new Date().toLocaleString() });
+        saveAllData(); renderReviews();
+        showToast("Пикириңиз үчүн рахмат!");
+        document.getElementById('revText').value = ''; currentRating = 0;
+        document.querySelectorAll('#starRating i').forEach(s => { s.classList.remove('fas','active'); s.classList.add('far'); });
+    }
+    
+    function renderReviews() {
+        let container = document.getElementById('reviewsList');
+        if(reviews.length === 0) { container.innerHTML = '<div class="loader">💬 Пикирлер жок</div>'; return; }
+        container.innerHTML = reviews.map(r => `<div class="review-card">${currentRole === 'admin' ? `<button class="delete-btn" onclick="deleteReview(${r.id})">🗑</button>` : ''}<div><strong>${r.name}</strong> <span>${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</span></div><p>${r.text}</p><small>${r.date}</small></div>`).join('');
+    }
+    function deleteReview(id) { if(confirm("Өчүрүү?")) { reviews = reviews.filter(r => r.id !== id); saveAllData(); renderReviews(); showToast("Өчүрүлдү!"); } }
+
+    async function init() {
+        loadAllData();
+        let savedTheme = localStorage.getItem("devwork_theme");
+        if(savedTheme === 'light') document.body.classList.add('light-mode');
+        setupStars();
+        if(currentRole) { currentRole = null; localStorage.removeItem("devwork_role"); }
+        document.getElementById('jobs-view').style.display = 'none';
+        document.getElementById('roleModal').style.display = 'flex';
+        await fetchJobs();
+        renderReviews();
+    }
+    
+    window.onclick = function(e) { if(e.target == document.getElementById('jobDetailModal')) closeJobDetail(); if(e.target == document.getElementById('applyFormModal')) closeApplyForm(); }
+    init();
+</script>
+ <script src="https://code.jivo.ru/widget/iw6lbi63z0" async></script>
+</body>
+</html>
